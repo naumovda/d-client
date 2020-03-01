@@ -1,10 +1,11 @@
 object dmPublic: TdmPublic
   OldCreateOrder = False
-  Left = 433
-  Top = 210
+  Left = 401
+  Top = 151
   Height = 631
-  Width = 650
+  Width = 974
   object Conn: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=database.mdb;Persis' +
       't Security Info=False;'
@@ -1142,5 +1143,143 @@ object dmPublic: TdmPublic
     BCDToCurrency = False
     Left = 568
     Top = 72
+  end
+  object qCreateRouteTable: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table Route'
+      '('
+      'ObjectId VARCHAR(50),'
+      'ObjectIntId COUNTER CONSTRAINT PrimaryKey PRIMARY KEY,'
+      'ObjectCode int'
+      ');')
+    Left = 624
+    Top = 192
+  end
+  object dsRoute: TDataSource
+    DataSet = tRoute
+    Left = 32
+    Top = 504
+  end
+  object tRoute: TADOTable
+    Connection = Conn
+    CursorType = ctStatic
+    AfterInsert = tRouteAfterInsert
+    OnPostError = tRoutePostError
+    TableName = 'Route'
+    Left = 48
+    Top = 520
+    object tRouteObjectId: TWideStringField
+      FieldName = 'ObjectId'
+      Size = 50
+    end
+    object tRouteObjectIntId: TAutoIncField
+      FieldName = 'ObjectIntId'
+      ReadOnly = True
+    end
+    object tRouteObjectCode: TIntegerField
+      FieldName = 'ObjectCode'
+    end
+  end
+  object qCreateRoutesetTable: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table Routeset'
+      '('
+      'ObjectId VARCHAR(50),'
+      'ObjectIntId COUNTER CONSTRAINT PrimaryKey PRIMARY KEY,'
+      'Name VARCHAR(255)'
+      ');')
+    Left = 624
+    Top = 240
+  end
+  object tRouteset: TADOTable
+    Connection = Conn
+    CursorType = ctStatic
+    AfterInsert = tRoutesetAfterInsert
+    TableName = 'Routeset'
+    Left = 120
+    Top = 520
+    object tRoutesetObjectId: TWideStringField
+      FieldName = 'ObjectId'
+      Size = 50
+    end
+    object tRoutesetObjectIntId: TAutoIncField
+      FieldName = 'ObjectIntId'
+      ReadOnly = True
+    end
+    object tRoutesetName: TWideStringField
+      FieldName = 'Name'
+      Size = 255
+    end
+  end
+  object dsRouteset: TDataSource
+    DataSet = tRouteset
+    Left = 104
+    Top = 504
+  end
+  object qCreateRoutesetDetailTable: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table RoutesetDetail'
+      '('
+      'ObjectId VARCHAR(50),'
+      'ObjectIntId COUNTER CONSTRAINT PrimaryKey PRIMARY KEY,'
+      'RoutesetId INT,'
+      'CarCount INT'
+      ');')
+    Left = 624
+    Top = 296
+  end
+  object qAlterRoutesetDetailTable: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table RoutesetDetail '
+      'add CONSTRAINT RoutesetDetailRouteId '
+      'FOREIGN KEY (RoutesetId)'
+      'REFERENCES Routeset(ObjectIntId) '
+      'ON UPDATE CASCADE '
+      'ON DELETE CASCADE;')
+    Left = 624
+    Top = 344
+  end
+  object qAlterRouteTable: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table Route add CONSTRAINT RouteAK1 UNIQUE (ObjectCode)')
+    Left = 624
+    Top = 400
+  end
+  object tRoutesetDetail: TADOTable
+    Connection = Conn
+    CursorType = ctStatic
+    AfterInsert = tRoutesetDetailAfterInsert
+    TableName = 'RoutesetDetail'
+    Left = 192
+    Top = 520
+    object tRoutesetDetailObjectId: TWideStringField
+      FieldName = 'ObjectId'
+      Size = 50
+    end
+    object tRoutesetDetailObjectIntId: TAutoIncField
+      FieldName = 'ObjectIntId'
+      ReadOnly = True
+    end
+    object tRoutesetDetailRoutesetId: TIntegerField
+      FieldName = 'RoutesetId'
+    end
+    object tRoutesetDetailCarCount: TIntegerField
+      FieldName = 'CarCount'
+    end
+  end
+  object dsRoutesetDetail: TDataSource
+    DataSet = tRoutesetDetail
+    Left = 176
+    Top = 504
   end
 end

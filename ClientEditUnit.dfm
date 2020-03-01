@@ -4,6 +4,7 @@ inherited ClientEdit: TClientEdit
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1076#1072#1085#1085#1099#1093' '#1086' '#1082#1083#1080#1077#1085#1090#1077
   ClientWidth = 538
   OldCreateOrder = True
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPageControl: TcxPageControl

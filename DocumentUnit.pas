@@ -64,6 +64,8 @@ type
     tvMainDiscontPercent: TcxGridDBColumn;
     tvMainDocumentSum: TcxGridDBColumn;
     tvMainDocumentSumTotal: TcxGridDBColumn;
+    dxLeftItem9: TdxLayoutItem;
+    cxGroup: TcxButtonEdit;
     procedure tvMainStylesGetContentStyle(Sender: TcxCustomGridTableView;
       ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
       out AStyle: TcxStyle);
@@ -88,10 +90,12 @@ type
       AButtonIndex: Integer);
     procedure cxPaymentPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
+    procedure cxGroupPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
   private
     { Private declarations }
   public
-    ClientId, GroupId: integer;
+    ClientId, GroupId, ClientGroupId: integer;
 
     PaymentId: string;
 
@@ -109,7 +113,9 @@ uses
   DataModuleUnit
   ,PaymentTypeUnit
   ,PaymentTypeEditUnit
-  ,ClientUnit  
+  ,ClientGroupUnit
+  ,ClientGroupEditUnit
+  ,ClientUnit
   ,ClientEditUnit
   ,DocumentGroupUnit
   ,DocumentGroupEditUnit  
@@ -188,31 +194,41 @@ end;
 
 procedure TDocuments.FormShow(Sender: TObject);
 begin
+  acClearExecute(Sender);
+  
   cxArchive.EditValue := false;
 
   if self.Parameters = '0' then
-    tvMainClientGroupCalc.GroupIndex := 0
+    begin
+      tvMainClientGroupCalc.GroupIndex := 0;
+      ClientGroupId := -1;
+      cxGroup.EditValue := '';
+    end
   else
-    tvMainClientGroupCalc.GroupIndex := -1;
-
-
-  dmPublic.tClientGroup.Locate('ObjectIntId', self.Parameters, []);
-
-  //SetArchive;
-
-  acClearExecute(Sender);
+    begin
+      tvMainClientGroupCalc.GroupIndex := -1;
+      if dmPublic.tClientGroup.Locate('ObjectIntId', self.Parameters, []) then
+        begin
+          ClientGroupId := dmPublic.tClientGroupObjectIntId.Value;
+          cxGroup.EditValue := dmPublic.tClientGroupClientGroupName.Value;
+        end
+      else
+        begin
+          ClientGroupId := -1;
+          cxGroup.EditValue := '';
+        end;
+    end;
 
   acSearchExecute(Sender);
 end;
 
 procedure TDocuments.acAddToArchiveExecute(Sender: TObject);
 begin
-  if MessageDlg('Переместить договор в архив?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  if MessageDlg('Переместить договор в архив?',
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   begin
     DS.DataSet.Edit;
-
     DS.DataSet.FieldValues['IsArchive'] := true;
-
     DS.DataSet.Post;
   end;
 end;
@@ -222,9 +238,7 @@ begin
   if MessageDlg('Переместить договор из архива?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   begin
     DS.DataSet.Edit;
-
     DS.DataSet.FieldValues['IsArchive'] := false;
-
     DS.DataSet.Post;
   end;
 end;
@@ -241,8 +255,10 @@ begin
 
   cxNumber.EditValue := '';
 
-  GroupId := -1;
+  ClientGroupId := -1;
+  cxGroup.EditValue := '';
 
+  GroupId := -1;
   cxType.EditValue := '';
 
   PaymentId := '';
@@ -300,6 +316,13 @@ begin
         'только непроведенные'
       );
     end;
+
+    if ClientGroupId <> -1 then
+      AddItem(tvMain.GetColumnByFieldName('ClientGroupCalc'),
+        foEqual,
+        cxGroup.Text,
+        cxGroup.Text
+      );
 
     if ClientId <> -1 then
       AddItem(tvMain.GetColumnByFieldName('ClientId'),
@@ -490,6 +513,36 @@ begin
       PaymentId := '';
 
       cxPayment.EditValue := '';
+    end
+  end;
+
+  acSearchExecute(Sender);
+end;
+
+procedure TDocuments.cxGroupPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+var
+  F: TForm;
+begin
+  case AButtonIndex of
+  0:
+    begin
+      F := TClientGroup.Execute(ClientGroupEdit, 'modal');
+
+      F.ShowModal;
+
+      if F.Tag = mrOk then
+      begin
+        ClientGroupId := dmPublic.tClientGroupObjectIntId.Value;
+
+        cxGroup.EditValue := dmPublic.tClientGroupClientGroupName.Value;
+      end;
+    end;
+  1:
+    begin
+      ClientGroupId := -1;
+
+      cxGroup.EditValue := '';
     end
   end;
 

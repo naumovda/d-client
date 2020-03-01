@@ -5,7 +5,7 @@ uses
   DataModuleUnit in 'DataModuleUnit.pas' {dmPublic: TDataModule},
   FormAbsUnit in 'FormAbsUnit.pas' {FormListAbs},
   FormEditAbsUnit in 'FormEditAbsUnit.pas' {FormEditAbs},
-  MAIN in 'MAIN.PAS' {MainForm},
+  MAIN in 'Main.pas' {MainForm},
   FormReportAbsUnit in 'FormReportAbsUnit.pas' {FormReportAbs},
   DocumentStateUnit in 'DocumentStateUnit.pas' {DocumentState},
   ClientTypeUnit in 'ClientTypeUnit.pas' {ClientType},
@@ -21,7 +21,13 @@ uses
   PaymentEditUnit in 'PaymentEditUnit.pas' {PaymentEdit},
   DocumentGroupEditUnit in 'DocumentGroupEditUnit.pas' {DocumentGroupEdit},
   ClientGroupEditUnit in 'ClientGroupEditUnit.pas' {ClientGroupEdit},
-  SaldoUnit in 'SaldoUnit.pas' {Saldo};
+  SaldoUnit in 'SaldoUnit.pas' {Saldo},
+  RouteUnit in 'RouteUnit.pas' {Route},
+  RouteEditUnit in 'RouteEditUnit.pas' {RouteEdit},
+  RoutesetUnit in 'RoutesetUnit.pas' {Routeset},
+  RoutesetEditUnit in 'RoutesetEditUnit.pas' {RoutesetEdit},
+  ReportUnit in 'ReportUnit.pas' {WordExport: TDataModule},
+  ClientDetailEditUnit in 'ClientDetailEditUnit.pas' {ClientDetailEdit};
 
 {$R *.res}
 
@@ -31,7 +37,9 @@ begin
   Application.Title := 'Работа с договорами';
 
   Application.CreateForm(TdmPublic, dmPublic);
+  Application.CreateForm(TWordExport, WordExport);  
   Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TClientDetailEdit, ClientDetailEdit);
   Application.CreateForm(TClientTypeEdit, ClientTypeEdit);
   Application.CreateForm(TClientEdit, ClientEdit);
   Application.CreateForm(TDocumentEdit, DocumentEdit);
@@ -39,6 +47,8 @@ begin
   Application.CreateForm(TPaymentEdit, PaymentEdit);
   Application.CreateForm(TDocumentGroupEdit, DocumentGroupEdit);
   Application.CreateForm(TClientGroupEdit, ClientGroupEdit);
+  Application.CreateForm(TRouteEdit, RouteEdit);
+  Application.CreateForm(TRoutesetEdit, RoutesetEdit);
 
   Application.Run;
 end.

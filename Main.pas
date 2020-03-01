@@ -73,6 +73,10 @@ type
     acSaldo: TAction;
     ImageList: TImageList;
     dxBarButton1: TdxBarButton;
+    dxRoute: TdxBarButton;
+    acRoute: TAction;
+    acRouteset: TAction;
+    dxRouteset: TdxBarButton;
     procedure FileExit1Execute(Sender: TObject);
     procedure actConnectDBExecute(Sender: TObject);
     procedure actDisconnectDBExecute(Sender: TObject);
@@ -90,6 +94,8 @@ type
     procedure acDocumentGroupExecute(Sender: TObject);
     procedure acPaymentTypeExecute(Sender: TObject);
     procedure acSaldoExecute(Sender: TObject);
+    procedure acRouteExecute(Sender: TObject);
+    procedure acRoutesetExecute(Sender: TObject);
   private
   public
     Err : boolean;
@@ -130,6 +136,10 @@ uses
   ,PaymentTypeEditUnit
   ,DocumentGroupEditUnit
   ,SaldoUnit
+  ,RouteUnit
+  ,RouteEditUnit
+  ,RoutesetUnit
+  ,RoutesetEditUnit
   ;
 
 procedure TMainForm.FileExit1Execute(Sender: TObject);
@@ -343,6 +353,16 @@ end;
 procedure TMainForm.acSaldoExecute(Sender: TObject);
 begin
   TSaldo.Execute(false);
+end;
+
+procedure TMainForm.acRouteExecute(Sender: TObject);
+begin
+  TRoute.Execute(RouteEdit, '');
+end;
+
+procedure TMainForm.acRoutesetExecute(Sender: TObject);
+begin
+  TRouteset.Execute(RoutesetEdit, '');
 end;
 
 end.

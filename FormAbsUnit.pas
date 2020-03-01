@@ -182,27 +182,28 @@ var
   F : TForm;
 begin
   if Parameters = 'modal' then
-  begin
-    F := Create(Application);
-    (F as TFormListAbs).Parameters   := Parameters;
-    (F as TFormListAbs).FEditForm    := EditForm;
-    F.FormStyle := fsNormal;
-    F.Visible:= false;
-    result := F;
-  end
-  else if not FormExist(ClassName) then
-  begin
+    begin
       F := Create(Application);
-      (F as TFormListAbs).Parameters   := Parameters;
-      (F as TFormListAbs).FEditForm    := EditForm;
-      F.FormStyle := fsMDIChild;
+      (F as TFormListAbs).Parameters := Parameters;
+      (F as TFormListAbs).FEditForm := EditForm;
+      F.FormStyle := fsNormal;
+      F.Visible:= false;
       result := F;
-  end else
-  begin
-    ActivateForm(ClassName);
-
-    result := GetFormIfExist(ClassName);
-  end;
+    end
+  else
+    if not FormExist(ClassName) or (ClassName = 'TDocuments') then
+      begin
+        F := Create(Application);
+        (F as TFormListAbs).Parameters := Parameters;
+        (F as TFormListAbs).FEditForm := EditForm;
+        F.FormStyle := fsMDIChild;
+        result := F;
+      end
+    else
+      begin
+        ActivateForm(ClassName);
+        result := GetFormIfExist(ClassName);
+      end;
 end;
 
 class function TFormListAbs.GetFormIfExist(FormTypeName : string): TForm;

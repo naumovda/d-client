@@ -201,7 +201,7 @@ inherited DocumentEdit: TDocumentEdit
       Width = 75
       Height = 25
       Action = acSetNumber
-      TabOrder = 15
+      TabOrder = 16
       Visible = False
     end
     object cxButton2: TcxButton [9]
@@ -210,7 +210,7 @@ inherited DocumentEdit: TDocumentEdit
       Width = 75
       Height = 25
       Action = acClearNumber
-      TabOrder = 14
+      TabOrder = 15
       Visible = False
     end
     object cxState: TcxDBLabel [10]
@@ -449,6 +449,11 @@ inherited DocumentEdit: TDocumentEdit
       Caption = #1042' '#1072#1088#1093#1080#1074
       OnExecute = acSwitchArciveExecute
     end
+    object acPrint: TAction
+      Caption = #1055#1077#1095#1072#1090#1100
+      ImageIndex = 9
+      OnExecute = acPrintExecute
+    end
   end
   inherited ImageList: TImageList
     Left = 144
@@ -539,6 +544,30 @@ inherited DocumentEdit: TDocumentEdit
           ItemName = 'dxBarButton3'
         end>
     end
+    inherited dxAction: TdxBarSubItem
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarPrint'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'dxSave'
+        end
+        item
+          Visible = True
+          ItemName = 'dxOK'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSeparator1'
+        end
+        item
+          Visible = True
+          ItemName = 'dxClose'
+        end>
+    end
     object dxBarButton7: TdxBarButton [12]
       Action = acApprove
       Category = 0
@@ -551,6 +580,10 @@ inherited DocumentEdit: TDocumentEdit
     end
     object dxBarButton9: TdxBarButton [14]
       Action = acSwitchArcive
+      Category = 0
+    end
+    object dxBarPrint: TdxBarButton [15]
+      Action = acPrint
       Category = 0
     end
   end

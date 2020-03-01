@@ -70,6 +70,8 @@ type
     cxSumTotal: TcxDBCalcEdit;
     dxLayoutMainItem16: TdxLayoutItem;
     dxLayoutMainSeparatorItem3: TdxLayoutSeparatorItem;
+    acPrint: TAction;
+    dxBarPrint: TdxBarButton;
     procedure cxClientPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure cxGroupPropertiesButtonClick(Sender: TObject;
@@ -86,6 +88,7 @@ type
     procedure acSwitchArciveExecute(Sender: TObject);
     procedure acNewExecute(Sender: TObject);
     procedure acEditExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -109,6 +112,7 @@ implementation
 
 uses
   DataModuleUnit
+  ,ReportUnit
   ,ClientUnit
   ,ClientEditUnit
   ,DocumentGroupUnit
@@ -498,6 +502,11 @@ begin
   end;
 
   inherited;
+end;
+
+procedure TDocumentEdit.acPrintExecute(Sender: TObject);
+begin
+  WordExport.CreateDocument();
 end;
 
 end.

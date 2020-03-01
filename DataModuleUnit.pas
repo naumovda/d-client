@@ -6,9 +6,7 @@ uses
   Forms, SysUtils, Classes, DB, ADODB, Dialogs, frxClass, frxDBSet,
   frxCross;
 
-
 type
-
   TdmPublic = class(TDataModule)
     Conn: TADOConnection;
     frxReport: TfrxReport;
@@ -166,6 +164,27 @@ type
     tSaldoB2: TFloatField;
     tSaldoB1: TFloatField;
     frxSaldo: TfrxDBDataset;
+    qCreateRouteTable: TADOQuery;
+    dsRoute: TDataSource;
+    tRoute: TADOTable;
+    tRouteObjectIntId: TAutoIncField;
+    tRouteObjectCode: TIntegerField;
+    tRouteObjectId: TWideStringField;
+    qCreateRoutesetTable: TADOQuery;
+    tRouteset: TADOTable;
+    dsRouteset: TDataSource;
+    tRoutesetObjectId: TWideStringField;
+    tRoutesetObjectIntId: TAutoIncField;
+    tRoutesetName: TWideStringField;
+    qCreateRoutesetDetailTable: TADOQuery;
+    qAlterRoutesetDetailTable: TADOQuery;
+    qAlterRouteTable: TADOQuery;
+    tRoutesetDetail: TADOTable;
+    dsRoutesetDetail: TDataSource;
+    tRoutesetDetailObjectId: TWideStringField;
+    tRoutesetDetailObjectIntId: TAutoIncField;
+    tRoutesetDetailRoutesetId: TIntegerField;
+    tRoutesetDetailCarCount: TIntegerField;
     procedure tDocumentStateAfterInsert(DataSet: TDataSet);
     procedure tClientTypeAfterInsert(DataSet: TDataSet);
     procedure tClientTypeAttributeAfterInsert(DataSet: TDataSet);
@@ -184,6 +203,11 @@ type
     procedure tPaymentCalcFields(DataSet: TDataSet);
     procedure tSaldoAfterInsert(DataSet: TDataSet);
     procedure tSaldoCalcFields(DataSet: TDataSet);
+    procedure tRouteAfterInsert(DataSet: TDataSet);
+    procedure tRoutesetAfterInsert(DataSet: TDataSet);
+    procedure tRoutePostError(DataSet: TDataSet; E: EDatabaseError;
+      var Action: TDataAction);
+    procedure tRoutesetDetailAfterInsert(DataSet: TDataSet);
 
   public
     Version: integer;
@@ -209,6 +233,8 @@ type
 
     function GetPaymentNewCode(APaymentIntId: integer;
       var ErrorCode: integer): integer;
+
+    function GetRouteId(ARouteCode: integer): integer;
   end;
 
 var
@@ -250,6 +276,15 @@ begin
   CreateGUID(guid);
 
   result := GUIDToString(guid);
+end;
+
+function TdmPublic.GetRouteId(ARouteCode: integer): integer;
+begin
+  dmPublic.tRoute.First;
+  if dmPublic.tRoute.Locate('ObjectCode', ARouteCode, []) then
+    Result := dmPublic.tRouteObjectIntId.Value
+  else
+    Result := -1;
 end;
 
 function TdmPublic.GetDocumentPrefix(ADocumentIntId: integer;
@@ -586,6 +621,67 @@ begin
     SetVersion(1);
   end;
 
+  if Version < 2 then
+  begin
+    qCreateRouteTable.ExecSQL;
+
+    qAlterRouteTable.ExecSQL;
+
+    qCreateRoutesetTable.ExecSQL;
+
+    qCreateRoutesetDetailTable.ExecSQL;
+
+    qAlterRoutesetDetailTable.ExecSQL;
+
+    Conn.Close;
+
+    Conn.Open;
+
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 33; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 50; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 58; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 62; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 65; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 66; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 68; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 70; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 71; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 73; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 75; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 77; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 80; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 82; tRoute.Post;
+
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 85; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 87; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 90; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 91; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 95; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 96; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 99; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 110; tRoute.Post;
+    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 138; tRoute.Post;
+
+    tRouteset.Open;
+    tRouteset.Append;
+    tRoutesetName.Value := '100 маршрутных такси';
+    tRouteset.Post;
+    //добавляем маршруты для данного набора
+
+    tRouteset.Open;
+    tRouteset.Append;
+    tRoutesetName.Value := '50 маршрутных такси';
+    tRouteset.Post;
+    //добавляем маршруты для данного набора
+
+
+    SetVersion(2);
+  end;
+
+  tRoute.Open;
+
+  tRouteset.Open;
+
   tPaymentType.Open;
   
   tDocumentState.Open;
@@ -827,6 +923,29 @@ begin
   tSaldoK2.Value := tSaldoK1.Value + tSaldoK0.Value;
 
   tSaldoB2.Value := tSaldoB1.Value + tSaldoB0.Value;
+end;
+
+procedure TdmPublic.tRouteAfterInsert(DataSet: TDataSet);
+begin
+  tRouteObjectId.Value := NEWGUID;
+end;
+
+procedure TdmPublic.tRoutesetAfterInsert(DataSet: TDataSet);
+begin
+  tRoutesetObjectId.Value := NEWGUID;
+end;
+
+procedure TdmPublic.tRoutePostError(DataSet: TDataSet; E: EDatabaseError;
+  var Action: TDataAction);
+begin
+  ShowMessage('Введен номер маршрута, который уже имеется в базе данных! Измените номер или отмените ввод.');
+
+  Action := daAbort;
+end;
+
+procedure TdmPublic.tRoutesetDetailAfterInsert(DataSet: TDataSet);
+begin
+  tRoutesetDetailObjectId.Value := NEWGUID;
 end;
 
 end.

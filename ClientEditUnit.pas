@@ -33,6 +33,7 @@ type
     procedure cxGroupPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure acPrintExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -53,6 +54,7 @@ uses
   ,ClientTypeEditUnit  
   ,ClientGroupUnit
   ,ClientGroupEditUnit
+  ,ClientDetailEditUnit
   ;
 
 procedure TClientEdit.acFillExecute(Sender: TObject);
@@ -164,6 +166,13 @@ begin
   dmPublic.frxReport.ShowReport();
 
   dmPublic.tDocument.Filtered := false;
+end;
+
+procedure TClientEdit.FormCreate(Sender: TObject);
+begin
+  FEditForm := ClientDetailEdit;
+
+  inherited;
 end;
 
 end.

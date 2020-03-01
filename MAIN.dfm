@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 296
-  Top = 206
+  Left = 309
+  Top = 308
   Width = 865
   Height = 517
   Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1072#1103' '#1089#1080#1089#1090#1077#1084#1072' '#1088#1072#1073#1086#1090#1099' '#1089' '#1082#1083#1080#1077#1085#1090#1072#1084#1080
@@ -186,6 +186,18 @@ object MainForm: TMainForm
       Caption = #1054#1090#1095#1077#1090': '#1057#1072#1083#1100#1076#1086
       ImageIndex = 10
       OnExecute = acSaldoExecute
+    end
+    object acRoute: TAction
+      Category = 'Database'
+      Caption = #1052#1072#1088#1096#1088#1091#1090#1099
+      ImageIndex = 2
+      OnExecute = acRouteExecute
+    end
+    object acRouteset: TAction
+      Category = 'Database'
+      Caption = #1042#1072#1088#1080#1072#1085#1090#1099' '#1088#1072#1079#1084#1077#1097#1077#1085#1080#1103' '#1088#1077#1082#1083#1072#1084#1099
+      ImageIndex = 2
+      OnExecute = acRoutesetExecute
     end
   end
   object ilImageListMain: TImageList
@@ -3507,6 +3519,15 @@ object MainForm: TMainForm
         item
           BeginGroup = True
           Visible = True
+          ItemName = 'dxRoute'
+        end
+        item
+          Visible = True
+          ItemName = 'dxRouteset'
+        end
+        item
+          BeginGroup = True
+          Visible = True
           ItemName = 'dxBarButton5'
         end
         item
@@ -3590,6 +3611,14 @@ object MainForm: TMainForm
     end
     object dxBarButton1: TdxBarButton
       Action = acSaldo
+      Category = 0
+    end
+    object dxRoute: TdxBarButton
+      Action = acRoute
+      Category = 0
+    end
+    object dxRouteset: TdxBarButton
+      Action = acRouteset
       Category = 0
     end
     object dxConnect: TdxBarButton

@@ -1,6 +1,6 @@
 inherited Documents: TDocuments
-  Left = 98
-  Top = 188
+  Left = 309
+  Top = 193
   Width = 1307
   Height = 596
   Caption = #1044#1086#1075#1086#1074#1086#1088#1072
@@ -121,12 +121,12 @@ inherited Documents: TDocuments
   inherited dxLeft: TdxLayoutControl
     Height = 531
     inherited cxSearch: TcxButton
-      Top = 442
-      TabOrder = 8
+      Top = 469
+      TabOrder = 9
     end
     inherited cxClear: TcxButton
-      Top = 442
-      TabOrder = 9
+      Top = 469
+      TabOrder = 10
     end
     object cxState: TcxRadioGroup [2]
       Left = 22
@@ -151,7 +151,7 @@ inherited Documents: TDocuments
     end
     object cxIsArchive: TcxRadioGroup [3]
       Left = 22
-      Top = 319
+      Top = 346
       Caption = #1055#1088#1080#1079#1085#1072#1082' '#1072#1088#1093#1080#1074#1085#1086#1075#1086' '#1076#1086#1075#1086#1074#1086#1088#1072
       Properties.Items = <
         item
@@ -166,13 +166,13 @@ inherited Documents: TDocuments
           Caption = #1074#1089#1077
         end>
       Properties.OnChange = cxIsArchivePropertiesChange
-      TabOrder = 7
+      TabOrder = 8
       Height = 105
       Width = 185
     end
     object cxClient: TcxButtonEdit [4]
       Left = 99
-      Top = 127
+      Top = 154
       Properties.Buttons = <
         item
           Default = True
@@ -186,21 +186,21 @@ inherited Documents: TDocuments
       Properties.OnButtonClick = cxClientPropertiesButtonClick
       Properties.OnChange = cxClientPropertiesChange
       Style.HotTrack = False
-      TabOrder = 1
+      TabOrder = 2
       Width = 121
     end
     object cxNumber: TcxTextEdit [5]
       Left = 99
-      Top = 154
+      Top = 181
       Properties.OnChange = cxNumberPropertiesChange
       Style.HotTrack = False
-      TabOrder = 2
+      TabOrder = 3
       Text = 'cxNumber'
       Width = 121
     end
     object cxType: TcxButtonEdit [6]
       Left = 99
-      Top = 181
+      Top = 208
       Properties.Buttons = <
         item
           Default = True
@@ -213,12 +213,12 @@ inherited Documents: TDocuments
       Properties.OnButtonClick = cxTypePropertiesButtonClick
       Properties.OnChange = cxTypePropertiesChange
       Style.HotTrack = False
-      TabOrder = 3
+      TabOrder = 4
       Width = 187
     end
     object cxPayment: TcxButtonEdit [7]
       Left = 99
-      Top = 208
+      Top = 235
       Properties.Buttons = <
         item
           Default = True
@@ -231,28 +231,46 @@ inherited Documents: TDocuments
       Properties.OnButtonClick = cxPaymentPropertiesButtonClick
       Properties.OnChange = cxPaymentPropertiesChange
       Style.HotTrack = False
-      TabOrder = 4
+      TabOrder = 5
       Width = 280
     end
     object cxDays: TcxSpinEdit [8]
       Left = 34
-      Top = 280
+      Top = 307
       Properties.ImmediatePost = True
       Properties.OnChange = cxDaysPropertiesChange
       Style.HotTrack = False
-      TabOrder = 6
+      TabOrder = 7
       Value = 7
       Width = 159
     end
     object cxSetDays: TcxCheckBox [9]
       Left = 34
-      Top = 253
+      Top = 280
       Caption = #1087#1088#1086#1080#1079#1074#1086#1083#1100#1085#1086#1075#1086' '#1087#1077#1088#1080#1086#1076#1072
       Properties.OnChange = cxSetDaysPropertiesChange
       Style.HotTrack = False
-      TabOrder = 5
+      TabOrder = 6
       OnClick = cxSetDaysClick
       Width = 121
+    end
+    object cxGroup: TcxButtonEdit [10]
+      Left = 99
+      Top = 127
+      Properties.Buttons = <
+        item
+          Default = True
+          Kind = bkEllipsis
+        end
+        item
+          Caption = 'X'
+          Kind = bkText
+        end>
+      Properties.ReadOnly = True
+      Properties.OnButtonClick = cxGroupPropertiesButtonClick
+      Style.HotTrack = False
+      TabOrder = 1
+      Width = 179
     end
     inherited dxLeftGroup_Root: TdxLayoutGroup
       inherited dxLeftGroup: TdxLayoutGroup
@@ -260,6 +278,11 @@ inherited Documents: TDocuments
           CaptionOptions.Text = 'cxRadioGroup1'
           CaptionOptions.Visible = False
           Control = cxState
+          ControlOptions.ShowBorder = False
+        end
+        object dxLeftItem9: TdxLayoutItem
+          CaptionOptions.Text = #1042#1080#1076' '#1082#1083#1080#1077#1085#1090#1072':'
+          Control = cxGroup
           ControlOptions.ShowBorder = False
         end
         object dxLeftItem3: TdxLayoutItem
