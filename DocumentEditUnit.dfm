@@ -1,6 +1,6 @@
 inherited DocumentEdit: TDocumentEdit
-  Left = 371
-  Top = 128
+  Left = 385
+  Top = 106
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1076#1086#1075#1086#1074#1086#1088#1072
   ClientHeight = 654
   ClientWidth = 700
@@ -66,6 +66,88 @@ inherited DocumentEdit: TDocumentEdit
             DataBinding.FieldName = 'PaymentState'
             Width = 101
           end
+        end
+      end
+    end
+    object cxTabSheet1: TcxTabSheet
+      Caption = #1052#1072#1088#1096#1088#1091#1090#1099
+      ImageIndex = 1
+      object dxBarDockControl1: TdxBarDockControl
+        Left = 0
+        Top = 0
+        Width = 692
+        Height = 26
+        Align = dalTop
+        BarManager = dxBarManager
+      end
+      object cxGridRoute: TcxGrid
+        Left = 0
+        Top = 26
+        Width = 692
+        Height = 173
+        Align = alClient
+        TabOrder = 1
+        object tvRoutes: TcxGridDBTableView
+          Tag = 1
+          NavigatorButtons.ConfirmDelete = False
+          NavigatorButtons.First.Visible = True
+          NavigatorButtons.PriorPage.Visible = True
+          NavigatorButtons.Prior.Visible = True
+          NavigatorButtons.Next.Visible = True
+          NavigatorButtons.NextPage.Visible = True
+          NavigatorButtons.Last.Visible = True
+          NavigatorButtons.Insert.Visible = True
+          NavigatorButtons.Append.Visible = False
+          NavigatorButtons.Delete.Visible = True
+          NavigatorButtons.Edit.Visible = True
+          NavigatorButtons.Post.Visible = True
+          NavigatorButtons.Cancel.Visible = True
+          NavigatorButtons.Refresh.Visible = True
+          NavigatorButtons.SaveBookmark.Visible = True
+          NavigatorButtons.GotoBookmark.Visible = True
+          NavigatorButtons.Filter.Visible = True
+          OnCellDblClick = tvRoutesCellDblClick
+          DataController.DataSource = DSRoutes
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          Filtering.ColumnMRUItemsList = False
+          Filtering.ColumnPopup.MaxDropDownItemCount = 0
+          Filtering.ColumnPopup.MultiSelect = False
+          FilterRow.InfoText = #1053#1072#1089#1090#1088#1086#1081#1082#1072' '#1092#1080#1083#1100#1090#1088#1072
+          NewItemRow.InfoText = #1044#1086#1073#1072#1074#1080#1090#1100
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.ImmediateEditor = False
+          OptionsBehavior.IncSearch = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsCustomize.ColumnsQuickCustomization = True
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.InvertSelect = False
+          OptionsSelection.UnselectFocusedRecordOnExit = False
+          OptionsView.FocusRect = False
+          OptionsView.NoDataToDisplayInfoText = '<'#1053#1077#1090' '#1076#1072#1085#1085#1099#1093' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
+          OptionsView.ExpandButtonsForEmptyDetails = False
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          Styles.Selection = cxStyleSel
+          object tvRoutesRoute: TcxGridDBColumn
+            Caption = #1052#1072#1088#1096#1088#1091#1090
+            DataBinding.FieldName = 'Route'
+            Width = 125
+          end
+          object tvRoutesCarCount: TcxGridDBColumn
+            Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1084#1072#1096#1080#1085
+            DataBinding.FieldName = 'CarCount'
+            Width = 151
+          end
+        end
+        object lvRoutes: TcxGridLevel
+          GridView = tvRoutes
         end
       end
     end
@@ -201,7 +283,7 @@ inherited DocumentEdit: TDocumentEdit
       Width = 75
       Height = 25
       Action = acSetNumber
-      TabOrder = 16
+      TabOrder = 18
       Visible = False
     end
     object cxButton2: TcxButton [9]
@@ -210,7 +292,7 @@ inherited DocumentEdit: TDocumentEdit
       Width = 75
       Height = 25
       Action = acClearNumber
-      TabOrder = 15
+      TabOrder = 17
       Visible = False
     end
     object cxState: TcxDBLabel [10]
@@ -454,6 +536,35 @@ inherited DocumentEdit: TDocumentEdit
       ImageIndex = 9
       OnExecute = acPrintExecute
     end
+    object acNewRoute: TAction
+      Caption = #1053#1086#1074#1099#1081' '#1084#1072#1096#1088#1091#1090
+      ImageIndex = 2
+      OnExecute = acNewRouteExecute
+    end
+    object acEditRoute: TAction
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1084#1072#1088#1096#1088#1091#1090
+      ImageIndex = 3
+      OnExecute = acEditRouteExecute
+    end
+    object acDeleteRoute: TAction
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1084#1072#1088#1096#1088#1091#1090
+      ImageIndex = 4
+      OnExecute = acDeleteRouteExecute
+    end
+    object acFillRoutes: TAction
+      Caption = #1047#1072#1087#1086#1083#1085#1080#1090#1100' '#1084#1072#1088#1096#1088#1091#1090#1099
+      OnExecute = acFillRoutesExecute
+    end
+    object acPostRoute: TAction
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+      ImageIndex = 5
+      OnExecute = acPostRouteExecute
+    end
+    object acCancelRoute: TAction
+      Caption = #1054#1090#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1077
+      ImageIndex = 6
+      OnExecute = acCancelRouteExecute
+    end
   end
   inherited ImageList: TImageList
     Left = 144
@@ -544,6 +655,51 @@ inherited DocumentEdit: TDocumentEdit
           ItemName = 'dxBarButton3'
         end>
     end
+    object dxBarManagerBar2: TdxBar [3]
+      Caption = 'Custom 3'
+      CaptionButtons = <>
+      DockControl = dxBarDockControl1
+      DockedDockControl = dxBarDockControl1
+      DockedLeft = 0
+      DockedTop = 0
+      FloatLeft = 321
+      FloatTop = 128
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton13'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'dxBarButton10'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton11'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton12'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'dxBarButton14'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton15'
+        end>
+      OneOnRow = True
+      Row = 0
+      ShowMark = False
+      UseOwnFont = False
+      Visible = True
+      WholeRow = True
+    end
     inherited dxAction: TdxBarSubItem
       ItemLinks = <
         item
@@ -568,27 +724,58 @@ inherited DocumentEdit: TDocumentEdit
           ItemName = 'dxClose'
         end>
     end
-    object dxBarButton7: TdxBarButton [12]
+    object dxBarButton7: TdxBarButton [13]
       Action = acApprove
       Category = 0
       PaintStyle = psCaptionGlyph
     end
-    object dxBarButton8: TdxBarButton [13]
+    object dxBarButton8: TdxBarButton [14]
       Action = acCancelApprove
       Category = 0
       PaintStyle = psCaptionGlyph
     end
-    object dxBarButton9: TdxBarButton [14]
+    object dxBarButton9: TdxBarButton [15]
       Action = acSwitchArcive
       Category = 0
     end
-    object dxBarPrint: TdxBarButton [15]
+    object dxBarPrint: TdxBarButton [16]
       Action = acPrint
+      Category = 0
+    end
+    object dxBarButton10: TdxBarButton [17]
+      Action = acNewRoute
+      Category = 0
+    end
+    object dxBarButton11: TdxBarButton [18]
+      Action = acEditRoute
+      Category = 0
+    end
+    object dxBarButton12: TdxBarButton [19]
+      Action = acDeleteRoute
+      Category = 0
+    end
+    object dxBarButton13: TdxBarButton [20]
+      Action = acFillRoutes
+      Category = 0
+    end
+    object dxBarButton14: TdxBarButton [21]
+      Action = acPostRoute
+      Category = 0
+    end
+    object dxBarButton15: TdxBarButton [22]
+      Action = acCancelRoute
       Category = 0
     end
   end
   inherited dxBarDB: TdxBarDBNavigator
     Left = 344
     Top = 521
+  end
+  object DSRoutes: TDataSource
+    DataSet = dmPublic.tDocumentRoutes
+    OnStateChange = DSStateChange
+    OnDataChange = DSDataChange
+    Left = 176
+    Top = 488
   end
 end

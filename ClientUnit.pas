@@ -77,7 +77,7 @@ begin
       tvMain.DataController.Filter.Root.BoolOperatorKind := fboAnd;
 
       tvMain.DataController.Filter.Root.AddItem( tvMainClientGroup,
-        foEqual, self.Parameters, 'Тип клиента');
+        foEqual, self.Parameters, 'Oei eeeaioa');
 
       tvMain.DataController.Filter.Active := True;
     end
@@ -107,7 +107,7 @@ end;
 
 procedure TClient.acDeleteExecute(Sender: TObject);
 begin
-  if MessageDlg('Внимание! Удаление клиента приведет к удалению всех его договоров! Продолжить?',
+  if MessageDlg('Aieiaiea! Oaaeaiea eeeaioa i?eaaaao e oaaeaie? anao aai aiaiai?ia! I?iaie?eou?',
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   try
     DS.DataSet.Delete();

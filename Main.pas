@@ -5,15 +5,10 @@ interface
 uses Windows, SysUtils, Classes, Graphics, Forms, Controls, Menus,
   StdCtrls, Dialogs, Buttons, Messages, ExtCtrls, ComCtrls, StdActns,
   ActnList, ToolWin, ImgList, ADODB, DB, DBClient, INIFiles,
-
-  LoginDialog,
-
   ExtActns, AppEvnts, SConnect,
   ScktComp, ComObj, cxGraphics, cxControls, dxStatusBar, dxBar,
   cxClasses, dxBarExtItems, 
-  cxLookAndFeels, cxLookAndFeelPainters;
-
- 
+  cxLookAndFeels, cxLookAndFeelPainters; 
 type
   TGUIState = (gsConnected, gsWorkOffline, gsAdminRights, gsUserOMTSRights, gsUserStockRights);
 

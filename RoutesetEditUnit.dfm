@@ -1,29 +1,49 @@
 inherited RoutesetEdit: TRoutesetEdit
-  Left = 308
-  Top = 84
+  Left = 364
+  Top = 184
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1074#1072#1088#1080#1072#1085#1090#1072
   ClientHeight = 499
-  ClientWidth = 987
+  ClientWidth = 827
+  OldCreateOrder = True
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inherited cxPageControl: TcxPageControl
     Top = 81
-    Width = 987
+    Width = 827
     Height = 392
     TabOrder = 2
     ClientRectBottom = 388
-    ClientRectRight = 983
+    ClientRectRight = 823
     inherited cxTable: TcxTabSheet
       Caption = #1042#1099#1073#1088#1072#1085#1085#1099#1077' '#1084#1072#1088#1096#1088#1091#1090#1099
       inherited dxBarDockControl: TdxBarDockControl
-        Width = 979
+        Width = 819
       end
       inherited Grid: TcxGrid
-        Width = 768
+        Width = 546
         Height = 338
+        inherited tvMain: TcxGridDBTableView
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Kind = skSum
+              Column = tvMainCarCount
+            end>
+          OptionsView.Footer = True
+          object tvMainRoute: TcxGridDBColumn
+            Caption = #1052#1072#1088#1096#1088#1091#1090
+            DataBinding.FieldName = 'Route'
+            Width = 96
+          end
+          object tvMainCarCount: TcxGridDBColumn
+            Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1084#1072#1096#1080#1085
+            DataBinding.FieldName = 'CarCount'
+            Width = 158
+          end
+        end
       end
       object cxSplitterMain: TcxSplitter
-        Left = 768
+        Left = 546
         Top = 26
         Width = 8
         Height = 338
@@ -33,26 +53,26 @@ inherited RoutesetEdit: TRoutesetEdit
         Visible = False
       end
       object dxLayoutDetail: TdxLayoutControl
-        Left = 776
+        Left = 554
         Top = 26
-        Width = 203
+        Width = 265
         Height = 338
         Align = alRight
         TabOrder = 3
         TabStop = False
         object cxLabel1: TcxLabel
           Left = 10
-          Top = 10
+          Top = 41
           Caption = #1042#1099#1073#1086#1088' '#1084#1072#1088#1096#1088#1091#1090#1086#1074
           Style.HotTrack = False
         end
         object cxGridRoutes: TcxGrid
           Left = 10
-          Top = 33
-          Width = 169
+          Top = 64
+          Width = 207
           Height = 295
           Align = alClient
-          TabOrder = 1
+          TabOrder = 2
           object tvRoutes: TcxGridDBTableView
             Tag = 1
             NavigatorButtons.ConfirmDelete = False
@@ -72,7 +92,7 @@ inherited RoutesetEdit: TRoutesetEdit
             NavigatorButtons.SaveBookmark.Visible = True
             NavigatorButtons.GotoBookmark.Visible = True
             NavigatorButtons.Filter.Visible = True
-            OnCellDblClick = tvMainCellDblClick
+            OnCellDblClick = tvRoutesCellDblClick
             DataController.DataSource = dmPublic.dsRoute
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
@@ -110,12 +130,26 @@ inherited RoutesetEdit: TRoutesetEdit
             GridView = tvRoutes
           end
         end
+        object cxButton1: TcxButton
+          Left = 10
+          Top = 10
+          Width = 75
+          Height = 25
+          Action = acNew
+          TabOrder = 0
+        end
         object dxLayoutDetailGroup_Root: TdxLayoutGroup
           AlignHorz = ahClient
           AlignVert = avClient
           ButtonOptions.Buttons = <>
           Hidden = True
           ShowBorder = False
+          object dxLayoutDetailItem3: TdxLayoutItem
+            CaptionOptions.Text = 'cxButton1'
+            CaptionOptions.Visible = False
+            Control = cxButton1
+            ControlOptions.ShowBorder = False
+          end
           object dxLayoutDetailItem1: TdxLayoutItem
             CaptionOptions.Text = 'cxLabel1'
             CaptionOptions.Visible = False
@@ -132,7 +166,7 @@ inherited RoutesetEdit: TRoutesetEdit
     end
   end
   inherited dxLayoutMain: TdxLayoutControl
-    Width = 987
+    Width = 827
     Height = 56
     object cxName: TcxDBTextEdit [0]
       Left = 91
@@ -152,8 +186,16 @@ inherited RoutesetEdit: TRoutesetEdit
       end
     end
   end
+  inherited DS: TDataSource
+    DataSet = dmPublic.tRoutesetDetail
+  end
   inherited DSMaster: TDataSource
     DataSet = dmPublic.tRouteset
+  end
+  inherited ActionList: TActionList
+    inherited acNew: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1072#1088#1096#1088#1091#1090
+    end
   end
   inherited dxBarManager: TdxBarManager
     Categories.ItemsVisibles = (
@@ -170,7 +212,18 @@ inherited RoutesetEdit: TRoutesetEdit
       25
       26)
     inherited dxButtons: TdxBar
-      DockedLeft = 660
+      DockedLeft = 500
+    end
+    inherited dxBarManagerBar1: TdxBar
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton2'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton3'
+        end>
     end
   end
 end

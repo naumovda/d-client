@@ -72,6 +72,27 @@ type
     dxLayoutMainSeparatorItem3: TdxLayoutSeparatorItem;
     acPrint: TAction;
     dxBarPrint: TdxBarButton;
+    cxTabSheet1: TcxTabSheet;
+    dxBarManagerBar2: TdxBar;
+    dxBarDockControl1: TdxBarDockControl;
+    acNewRoute: TAction;
+    acEditRoute: TAction;
+    acDeleteRoute: TAction;
+    acFillRoutes: TAction;
+    cxGridRoute: TcxGrid;
+    tvRoutes: TcxGridDBTableView;
+    lvRoutes: TcxGridLevel;
+    DSRoutes: TDataSource;
+    tvRoutesCarCount: TcxGridDBColumn;
+    tvRoutesRoute: TcxGridDBColumn;
+    dxBarButton10: TdxBarButton;
+    dxBarButton11: TdxBarButton;
+    dxBarButton12: TdxBarButton;
+    dxBarButton13: TdxBarButton;
+    acPostRoute: TAction;
+    acCancelRoute: TAction;
+    dxBarButton14: TdxBarButton;
+    dxBarButton15: TdxBarButton;
     procedure cxClientPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure cxGroupPropertiesButtonClick(Sender: TObject;
@@ -89,6 +110,15 @@ type
     procedure acNewExecute(Sender: TObject);
     procedure acEditExecute(Sender: TObject);
     procedure acPrintExecute(Sender: TObject);
+    procedure acNewRouteExecute(Sender: TObject);
+    procedure acEditRouteExecute(Sender: TObject);
+    procedure acDeleteRouteExecute(Sender: TObject);
+    procedure acFillRoutesExecute(Sender: TObject);
+    procedure acPostRouteExecute(Sender: TObject);
+    procedure acCancelRouteExecute(Sender: TObject);
+    procedure tvRoutesCellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
   private
     { Private declarations }
   public
@@ -101,6 +131,8 @@ type
     procedure SetStateApproved;
 
     procedure SetStateNotApproved;
+
+    procedure RefreshInfo(); override;
   end;
 
 var
@@ -119,6 +151,8 @@ uses
   ,PaymentTypeUnit
   ,PaymentTypeEditUnit
   ,PaymentEditUnit
+  ,RoutesetUnit
+  ,RoutesetEditUnit
   ;
 
 function TDocumentEdit.Check(var AMessage: string): boolean;
@@ -507,6 +541,108 @@ end;
 procedure TDocumentEdit.acPrintExecute(Sender: TObject);
 begin
   WordExport.CreateDocument();
+end;
+
+procedure TDocumentEdit.acNewRouteExecute(Sender: TObject);
+begin
+  UpdateMaster();
+
+  DSRoutes.DataSet.Append;
+
+  RefreshInfo();
+end;
+
+procedure TDocumentEdit.acEditRouteExecute(Sender: TObject);
+begin
+  DSRoutes.DataSet.Edit;
+end;
+
+procedure TDocumentEdit.acDeleteRouteExecute(Sender: TObject);
+begin
+  DSRoutes.DataSet.Delete;
+
+  RefreshInfo();
+end;
+
+procedure TDocumentEdit.acFillRoutesExecute(Sender: TObject);
+var
+  F: TForm;
+begin
+  if dmPublic.tDocumentRoutes.RecordCount > 0 then
+    if MessageDlg('Заполнение маршрутов приведет к удалению ранее введенных данных. Продолжить?',
+                  mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+      exit;
+
+  F := TRouteset.Execute(RoutesetEdit, 'modal');
+
+  F.ShowModal;
+
+  if F.Tag = mrOk then
+  begin
+    dmPublic.tDocumentRoutes.First;
+
+    while dmPublic.tDocumentRoutes.RecordCount > 0 do
+    begin
+      dmPublic.tDocumentRoutes.Delete;
+      
+      dmPublic.tDocumentRoutes.First;
+    end;
+
+    dmPublic.tRoutesetDetail.First;
+
+    while not dmPublic.tRoutesetDetail.Eof do
+    begin
+      //Добавляем маршрут
+      dmPublic.tDocumentRoutes.Append;
+
+      dmPublic.tDocumentRoutesRouteId.Value :=
+        dmPublic.tRoutesetDetailRouteId.Value;
+      dmPublic.tDocumentRoutesCarCount.Value :=
+        dmPublic.tRoutesetDetailCarCount.Value;
+
+      dmPublic.tDocumentRoutes.Post;
+
+      dmPublic.tRoutesetDetail.Next;
+    end;
+  end;
+end;
+
+procedure TDocumentEdit.RefreshInfo(); 
+begin
+  inherited;
+
+  if Visible then
+    begin
+      acNewRoute.Enabled := dsBrowse = DSRoutes.Dataset.State;
+      acEditRoute.Enabled := (dsBrowse = DSRoutes.Dataset.State)
+        and (not DSRoutes.DataSet.IsEmpty);
+      acDeleteRoute.Enabled := (dsBrowse = DSRoutes.Dataset.State)
+        and (not DSRoutes.DataSet.IsEmpty);
+      acPostRoute.Enabled := DSRoutes.Dataset.State in [dsEdit, dsInsert];
+      acCancelRoute.Enabled := DSRoutes.Dataset.State in [dsEdit, dsInsert];
+    end;
+end;
+
+procedure TDocumentEdit.acPostRouteExecute(Sender: TObject);
+begin
+  DSRoutes.DataSet.Post;
+
+  RefreshInfo();
+end;
+
+procedure TDocumentEdit.acCancelRouteExecute(Sender: TObject);
+begin
+  DSRoutes.DataSet.Cancel;
+
+  RefreshInfo();
+end;
+
+procedure TDocumentEdit.tvRoutesCellDblClick(
+  Sender: TcxCustomGridTableView;
+  ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+  AShift: TShiftState; var AHandled: Boolean);
+begin
+  DSRoutes.DataSet.Edit;
 end;
 
 end.

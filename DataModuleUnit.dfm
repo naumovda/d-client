@@ -5,7 +5,6 @@ object dmPublic: TdmPublic
   Height = 631
   Width = 974
   object Conn: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=database.mdb;Persis' +
       't Security Info=False;'
@@ -972,8 +971,8 @@ object dmPublic: TdmPublic
     AfterDelete = tDocumentPaymentAfterDelete
     OnCalcFields = tPaymentCalcFields
     TableName = 'DocumentPayment'
-    Left = 328
-    Top = 240
+    Left = 376
+    Top = 248
     object tPaymentObjectId: TWideStringField
       FieldName = 'ObjectId'
       Size = 50
@@ -1029,8 +1028,8 @@ object dmPublic: TdmPublic
   end
   object dsPayment: TDataSource
     DataSet = tPayment
-    Left = 312
-    Top = 224
+    Left = 360
+    Top = 232
   end
   object qAlterDocument03: TADOQuery
     Connection = Conn
@@ -1229,6 +1228,7 @@ object dmPublic: TdmPublic
       'ObjectId VARCHAR(50),'
       'ObjectIntId COUNTER CONSTRAINT PrimaryKey PRIMARY KEY,'
       'RoutesetId INT,'
+      'RouteId INT,'
       'CarCount INT'
       ');')
     Left = 624
@@ -1259,6 +1259,10 @@ object dmPublic: TdmPublic
     Connection = Conn
     CursorType = ctStatic
     AfterInsert = tRoutesetDetailAfterInsert
+    OnPostError = tRoutesetDetailPostError
+    IndexFieldNames = 'RoutesetId'
+    MasterFields = 'ObjectIntId'
+    MasterSource = dsRouteset
     TableName = 'RoutesetDetail'
     Left = 192
     Top = 520
@@ -1276,10 +1280,141 @@ object dmPublic: TdmPublic
     object tRoutesetDetailCarCount: TIntegerField
       FieldName = 'CarCount'
     end
+    object tRoutesetDetailRouteId: TIntegerField
+      FieldName = 'RouteId'
+    end
+    object tRoutesetDetailRoute: TIntegerField
+      FieldKind = fkLookup
+      FieldName = 'Route'
+      LookupDataSet = tRoute
+      LookupKeyFields = 'ObjectIntId'
+      LookupResultField = 'ObjectCode'
+      KeyFields = 'RouteId'
+      Lookup = True
+    end
   end
   object dsRoutesetDetail: TDataSource
     DataSet = tRoutesetDetail
     Left = 176
     Top = 504
+  end
+  object qAlterRoutesetDetailTable1: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table RoutesetDetail '
+      'add CONSTRAINT RoutesetAK1'
+      'UNIQUE (RoutesetId, RouteId)')
+    Left = 624
+    Top = 456
+  end
+  object qCreateDocumentRoutes: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table DocumentRoutes'
+      '('
+      'ObjectId VARCHAR(50),'
+      'ObjectIntId COUNTER CONSTRAINT PrimaryKey PRIMARY KEY,'
+      'DocumentId INT,'
+      'RouteId INT,'
+      'CarCount INT'
+      ');')
+    Left = 744
+    Top = 192
+  end
+  object qAlterDocumentRoutes: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table DocumentRoutes'
+      'add CONSTRAINT DocumentRoutesFK1'
+      'FOREIGN KEY (DocumentId)'
+      'REFERENCES Document(ObjectIntId) '
+      'ON UPDATE CASCADE '
+      'ON DELETE CASCADE;')
+    Left = 744
+    Top = 240
+  end
+  object qAlterDocumentRoutes1: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table DocumentRoutes'
+      'add CONSTRAINT DocumentRoutesFK2'
+      'FOREIGN KEY (RouteId)'
+      'REFERENCES Route(ObjectIntId) '
+      'ON UPDATE CASCADE '
+      'ON DELETE CASCADE;')
+    Left = 744
+    Top = 288
+  end
+  object qAlterDocumentRoutes2: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table DocumentRoutes'
+      'add CONSTRAINT DocumentRoutesAK1'
+      'UNIQUE (DocumentId, RouteId)')
+    Left = 744
+    Top = 344
+  end
+  object dsDocumentRoutes: TDataSource
+    DataSet = tDocumentRoutes
+    Left = 216
+    Top = 216
+  end
+  object tDocumentRoutes: TADOTable
+    Connection = Conn
+    CursorType = ctStatic
+    AfterInsert = tDocumentRoutesAfterInsert
+    IndexFieldNames = 'DocumentId'
+    MasterFields = 'ObjectIntId'
+    MasterSource = dsDocument
+    TableName = 'DocumentRoutes'
+    Left = 232
+    Top = 232
+    object tDocumentRoutesObjectId: TWideStringField
+      FieldName = 'ObjectId'
+      Size = 50
+    end
+    object tDocumentRoutesObjectIntId: TAutoIncField
+      FieldName = 'ObjectIntId'
+      ReadOnly = True
+    end
+    object tDocumentRoutesDocumentId: TIntegerField
+      FieldName = 'DocumentId'
+    end
+    object tDocumentRoutesRouteId: TIntegerField
+      FieldName = 'RouteId'
+    end
+    object tDocumentRoutesCarCount: TIntegerField
+      FieldName = 'CarCount'
+    end
+    object tDocumentRoutesRoute: TIntegerField
+      FieldKind = fkLookup
+      FieldName = 'Route'
+      LookupDataSet = tRoute
+      LookupKeyFields = 'ObjectIntId'
+      LookupResultField = 'ObjectCode'
+      KeyFields = 'RouteId'
+      Lookup = True
+    end
+  end
+  object qCreateDocumentAttributeSide1: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table DocumentAttributeSide1'
+      '('
+      'ObjectId VARCHAR(50),'
+      'ObjectIntId COUNTER CONSTRAINT PrimaryKey PRIMARY KEY,'
+      'DocumentId INT,'
+      'Number INT,'
+      'ObjectName VARCHAR(255),'
+      'ObjectValue VARCHAR(1024)'
+      ');')
+    Left = 624
+    Top = 136
   end
 end

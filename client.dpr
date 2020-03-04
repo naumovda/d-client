@@ -27,7 +27,8 @@ uses
   RoutesetUnit in 'RoutesetUnit.pas' {Routeset},
   RoutesetEditUnit in 'RoutesetEditUnit.pas' {RoutesetEdit},
   ReportUnit in 'ReportUnit.pas' {WordExport: TDataModule},
-  ClientDetailEditUnit in 'ClientDetailEditUnit.pas' {ClientDetailEdit};
+  ClientDetailEditUnit in 'ClientDetailEditUnit.pas' {ClientDetailEdit},
+  RoutesetDetailEditUnit in 'RoutesetDetailEditUnit.pas' {RoutesetDetailEdit};
 
 {$R *.res}
 
@@ -37,8 +38,9 @@ begin
   Application.Title := 'Работа с договорами';
 
   Application.CreateForm(TdmPublic, dmPublic);
-  Application.CreateForm(TWordExport, WordExport);  
+  Application.CreateForm(TWordExport, WordExport);
   Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TRoutesetDetailEdit, RoutesetDetailEdit);  
   Application.CreateForm(TClientDetailEdit, ClientDetailEdit);
   Application.CreateForm(TClientTypeEdit, ClientTypeEdit);
   Application.CreateForm(TClientEdit, ClientEdit);

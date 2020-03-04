@@ -185,6 +185,22 @@ type
     tRoutesetDetailObjectIntId: TAutoIncField;
     tRoutesetDetailRoutesetId: TIntegerField;
     tRoutesetDetailCarCount: TIntegerField;
+    tRoutesetDetailRouteId: TIntegerField;
+    tRoutesetDetailRoute: TIntegerField;
+    qAlterRoutesetDetailTable1: TADOQuery;
+    qCreateDocumentRoutes: TADOQuery;
+    qAlterDocumentRoutes: TADOQuery;
+    qAlterDocumentRoutes1: TADOQuery;
+    qAlterDocumentRoutes2: TADOQuery;
+    dsDocumentRoutes: TDataSource;
+    tDocumentRoutes: TADOTable;
+    tDocumentRoutesObjectId: TWideStringField;
+    tDocumentRoutesObjectIntId: TAutoIncField;
+    tDocumentRoutesDocumentId: TIntegerField;
+    tDocumentRoutesRouteId: TIntegerField;
+    tDocumentRoutesCarCount: TIntegerField;
+    tDocumentRoutesRoute: TIntegerField;
+    qCreateDocumentAttributeSide1: TADOQuery;
     procedure tDocumentStateAfterInsert(DataSet: TDataSet);
     procedure tClientTypeAfterInsert(DataSet: TDataSet);
     procedure tClientTypeAttributeAfterInsert(DataSet: TDataSet);
@@ -208,6 +224,9 @@ type
     procedure tRoutePostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
     procedure tRoutesetDetailAfterInsert(DataSet: TDataSet);
+    procedure tRoutesetDetailPostError(DataSet: TDataSet;
+      E: EDatabaseError; var Action: TDataAction);
+    procedure tDocumentRoutesAfterInsert(DataSet: TDataSet);
 
   public
     Version: integer;
@@ -235,6 +254,10 @@ type
       var ErrorCode: integer): integer;
 
     function GetRouteId(ARouteCode: integer): integer;
+    procedure AddRoutesetDetail(RouteCode, CarCount: integer);
+
+    procedure AddRoute(RouteCode: integer);
+    procedure AddRoutes();
   end;
 
 var
@@ -546,7 +569,57 @@ begin
   result := self.Conn.Connected;
 end;
 
+procedure TdmPublic.AddRoute(RouteCode: integer);
+begin
+  tRoute.Append;
+  tRouteObjectCode.Value := RouteCode;
+  tRoute.Post;
+end;
+
+procedure TdmPublic.AddRoutes();
+begin
+  AddRoute(50);
+  AddRoute(58);
+  AddRoute(62);
+  AddRoute(65);
+  AddRoute(66);
+  AddRoute(68);
+  AddRoute(70);
+  AddRoute(71);
+  AddRoute(73);
+  AddRoute(75);
+  AddRoute(77);
+  AddRoute(80);
+  AddRoute(82);
+  AddRoute(85);
+  AddRoute(87);
+  AddRoute(90);
+  AddRoute(91);
+  AddRoute(95);
+  AddRoute(96);
+  AddRoute(99);
+  AddRoute(110);
+  AddRoute(138);
+end;
+
+procedure TdmPublic.AddRoutesetDetail(RouteCode, CarCount: integer);
+var
+  RouteId: integer;
+begin
+  RouteId := self.GetRouteId(RouteCode);
+
+  if RouteId <> -1 then
+  begin
+    tRoutesetDetail.Append;
+    tRoutesetDetailRouteId.Value := RouteId;
+    tRoutesetDetailCarCount.Value := CarCount;
+    tRoutesetDetail.Post;
+  end;
+end;
+
 function TdmPublic.SetOnline(const Value, Open, Save: boolean): boolean;
+var
+  RouteId, RoutesetId: integer;
 begin
   AppPath := Copy(Application.ExeName, 1,
     LastDelimiter('\', Application.ExeName));
@@ -624,56 +697,75 @@ begin
   if Version < 2 then
   begin
     qCreateRouteTable.ExecSQL;
-
     qAlterRouteTable.ExecSQL;
-
     qCreateRoutesetTable.ExecSQL;
-
     qCreateRoutesetDetailTable.ExecSQL;
-
     qAlterRoutesetDetailTable.ExecSQL;
+    qAlterRoutesetDetailTable1.ExecSQL;
+
+    qCreateDocumentRoutes.ExecSQL;
+    qAlterDocumentRoutes.ExecSQL;
+    qAlterDocumentRoutes1.ExecSQL;
+    qAlterDocumentRoutes2.ExecSQL;        
 
     Conn.Close;
-
     Conn.Open;
 
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 33; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 50; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 58; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 62; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 65; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 66; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 68; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 70; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 71; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 73; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 75; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 77; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 80; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 82; tRoute.Post;
-
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 85; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 87; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 90; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 91; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 95; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 96; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 99; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 110; tRoute.Post;
-    tRoute.Open; tRoute.Append; tRouteObjectCode.Value := 138; tRoute.Post;
-
+    tRoute.Open;
     tRouteset.Open;
+    tRoutesetDetail.Open;
+
+    AddRoutes();
+    
     tRouteset.Append;
     tRoutesetName.Value := '100 маршрутных такси';
     tRouteset.Post;
-    //добавляем маршруты для данного набора
 
-    tRouteset.Open;
+    //добавляем маршруты для набора '100 маршрутных такси'
+    RoutesetId := tRoutesetObjectIntId.Value;
+    AddRoutesetDetail(33, 15);
+    AddRoutesetDetail(50, 2);
+    AddRoutesetDetail(58, 4);
+    AddRoutesetDetail(62, 4);
+    AddRoutesetDetail(65, 2);
+    AddRoutesetDetail(66, 5);
+    AddRoutesetDetail(68, 2);
+    AddRoutesetDetail(70, 6);
+    AddRoutesetDetail(71, 4);
+    AddRoutesetDetail(73, 2);
+    AddRoutesetDetail(75, 3);
+    AddRoutesetDetail(77, 23);
+    AddRoutesetDetail(80, 2);
+    AddRoutesetDetail(82, 3);
+    AddRoutesetDetail(85, 2);
+    AddRoutesetDetail(87, 6);
+    AddRoutesetDetail(90, 12);
+    AddRoutesetDetail(91, 4);
+    AddRoutesetDetail(95, 3);
+    AddRoutesetDetail(96, 2);
+    AddRoutesetDetail(99, 6);
+    AddRoutesetDetail(110, 3);
+    AddRoutesetDetail(138, 1);
+
     tRouteset.Append;
     tRoutesetName.Value := '50 маршрутных такси';
     tRouteset.Post;
-    //добавляем маршруты для данного набора
 
+    //добавляем маршруты для данного набора
+    RoutesetId := tRoutesetObjectIntId.Value;
+    AddRoutesetDetail(33, 15);
+    AddRoutesetDetail(62, 4);
+    AddRoutesetDetail(65, 2);
+    AddRoutesetDetail(66, 5);
+    AddRoutesetDetail(73, 2);
+    AddRoutesetDetail(75, 2);
+    AddRoutesetDetail(77, 1);
+    AddRoutesetDetail(80, 1);
+    AddRoutesetDetail(85, 3);
+    AddRoutesetDetail(91, 4);
+    AddRoutesetDetail(95, 3);
+    AddRoutesetDetail(96, 2);
+    AddRoutesetDetail(99, 7);
 
     SetVersion(2);
   end;
@@ -681,6 +773,8 @@ begin
   tRoute.Open;
 
   tRouteset.Open;
+
+  tRoutesetDetail.Open;  
 
   tPaymentType.Open;
   
@@ -701,6 +795,8 @@ begin
   tDocument.Open;
 
   tDocumentPayment.Open;
+
+  tDocumentRoutes.Open;
 
   tPayment.Open;
 
@@ -948,4 +1044,18 @@ begin
   tRoutesetDetailObjectId.Value := NEWGUID;
 end;
 
+procedure TdmPublic.tRoutesetDetailPostError(DataSet: TDataSet;
+  E: EDatabaseError; var Action: TDataAction);
+begin
+  ShowMessage('Введен номер маршрута, который уже имеется в базе данных! Измените номер или отмените ввод.');
+
+  Action := daAbort;
+end;
+
+procedure TdmPublic.tDocumentRoutesAfterInsert(DataSet: TDataSet);
+begin
+  tDocumentRoutesObjectId.Value := NEWGUID;
+end;
+
 end.
+
