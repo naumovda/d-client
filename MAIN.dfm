@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 309
-  Top = 308
-  Width = 865
-  Height = 517
+  Left = 249
+  Top = 133
+  Width = 1091
+  Height = 648
   Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1072#1103' '#1089#1080#1089#1090#1077#1084#1072' '#1088#1072#1073#1086#1090#1099' '#1089' '#1082#1083#1080#1077#1085#1090#1072#1084#1080
   Color = clAppWorkSpace
   Font.Charset = DEFAULT_CHARSET
@@ -21,8 +21,8 @@ object MainForm: TMainForm
   TextHeight = 13
   object dxStatusBar: TdxStatusBar
     Left = 0
-    Top = 458
-    Width = 849
+    Top = 589
+    Width = 1075
     Height = 20
     Panels = <
       item
@@ -198,6 +198,17 @@ object MainForm: TMainForm
       Caption = #1042#1072#1088#1080#1072#1085#1090#1099' '#1088#1072#1079#1084#1077#1097#1077#1085#1080#1103' '#1088#1077#1082#1083#1072#1084#1099
       ImageIndex = 2
       OnExecute = acRoutesetExecute
+    end
+    object acSelfParameters: TAction
+      Category = 'Database'
+      Caption = #1053#1072#1096#1072' '#1086#1088#1075#1072#1085#1080#1079#1072#1094#1080#1080#1103
+      ImageIndex = 2
+      OnExecute = acSelfParametersExecute
+    end
+    object acTest: TAction
+      Category = 'Program'
+      Caption = 'Test'
+      OnExecute = acTestExecute
     end
   end
   object ilImageListMain: TImageList
@@ -3498,6 +3509,10 @@ object MainForm: TMainForm
           ItemName = 'dxDisconnect'
         end
         item
+          Visible = True
+          ItemName = 'dxBarButton4'
+        end
+        item
           BeginGroup = True
           Visible = True
           ItemName = 'dxExit'
@@ -3537,6 +3552,10 @@ object MainForm: TMainForm
         item
           Visible = True
           ItemName = 'dxBarButton9'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton3'
         end>
     end
     object dxBarSubItem1: TdxBarSubItem
@@ -3619,6 +3638,14 @@ object MainForm: TMainForm
     end
     object dxRouteset: TdxBarButton
       Action = acRouteset
+      Category = 0
+    end
+    object dxBarButton3: TdxBarButton
+      Action = acSelfParameters
+      Category = 0
+    end
+    object dxBarButton4: TdxBarButton
+      Action = acTest
       Category = 0
     end
     object dxConnect: TdxBarButton

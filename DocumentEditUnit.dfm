@@ -1,6 +1,6 @@
 inherited DocumentEdit: TDocumentEdit
-  Left = 385
-  Top = 106
+  Left = 586
+  Top = 87
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1076#1086#1075#1086#1074#1086#1088#1072
   ClientHeight = 654
   ClientWidth = 700

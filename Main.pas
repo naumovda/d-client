@@ -7,8 +7,10 @@ uses Windows, SysUtils, Classes, Graphics, Forms, Controls, Menus,
   ActnList, ToolWin, ImgList, ADODB, DB, DBClient, INIFiles,
   ExtActns, AppEvnts, SConnect,
   ScktComp, ComObj, cxGraphics, cxControls, dxStatusBar, dxBar,
-  cxClasses, dxBarExtItems, 
-  cxLookAndFeels, cxLookAndFeelPainters; 
+  cxClasses, dxBarExtItems,
+  cxLookAndFeels, cxLookAndFeelPainters, IdBaseComponent, IdComponent,
+  IdTCPConnection, IdTCPClient, IdHTTP, IdIOHandler, IdIOHandlerSocket,
+  IdSSLOpenSSL;
 type
   TGUIState = (gsConnected, gsWorkOffline, gsAdminRights, gsUserOMTSRights, gsUserStockRights);
 
@@ -72,6 +74,10 @@ type
     acRoute: TAction;
     acRouteset: TAction;
     dxRouteset: TdxBarButton;
+    acSelfParameters: TAction;
+    dxBarButton3: TdxBarButton;
+    acTest: TAction;
+    dxBarButton4: TdxBarButton;
     procedure FileExit1Execute(Sender: TObject);
     procedure actConnectDBExecute(Sender: TObject);
     procedure actDisconnectDBExecute(Sender: TObject);
@@ -91,6 +97,8 @@ type
     procedure acSaldoExecute(Sender: TObject);
     procedure acRouteExecute(Sender: TObject);
     procedure acRoutesetExecute(Sender: TObject);
+    procedure acSelfParametersExecute(Sender: TObject);
+    procedure acTestExecute(Sender: TObject);
   private
   public
     Err : boolean;
@@ -114,9 +122,9 @@ implementation
 {$R *.dfm}
 
 uses
-  FormAbsUnit
+  Variants
+  ,FormAbsUnit
   ,DataModuleUnit
-  ,Variants
   ,DocumentStateUnit
   ,ClientTypeUnit
   ,ClientTypeEditUnit
@@ -135,6 +143,8 @@ uses
   ,RouteEditUnit
   ,RoutesetUnit
   ,RoutesetEditUnit
+  ,SelfParametersUnit
+  ,SelfParametersEditUnit
   ;
 
 procedure TMainForm.FileExit1Execute(Sender: TObject);
@@ -360,4 +370,18 @@ begin
   TRouteset.Execute(RoutesetEdit, '');
 end;
 
+procedure TMainForm.acSelfParametersExecute(Sender: TObject);
+begin
+  TSelfParameters.Execute(SelfParametersEdit, '');
+end;
+
+procedure TMainForm.acTestExecute(Sender: TObject);
+begin
+  // Token := '47c765822f48177f851040d5af5be2a110089302';
+  // Body := '5408110390';
+
+
+end;
+
 end.
+

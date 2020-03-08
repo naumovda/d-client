@@ -26,7 +26,7 @@ object FormEditAbs: TFormEditAbs
     Height = 172
     ActivePage = cxTable
     Align = alClient
-    TabOrder = 4
+    TabOrder = 3
     ClientRectBottom = 168
     ClientRectLeft = 4
     ClientRectRight = 671

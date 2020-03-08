@@ -1,7 +1,8 @@
 inherited ClientEdit: TClientEdit
-  Left = 404
-  Top = 264
+  Left = 416
+  Top = 164
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1076#1072#1085#1085#1099#1093' '#1086' '#1082#1083#1080#1077#1085#1090#1077
+  ClientHeight = 527
   ClientWidth = 538
   OldCreateOrder = True
   OnCreate = FormCreate
@@ -10,8 +11,9 @@ inherited ClientEdit: TClientEdit
   inherited cxPageControl: TcxPageControl
     Top = 128
     Width = 538
-    Height = 228
-    ClientRectBottom = 224
+    Height = 373
+    ActivePage = cxTabSheet1
+    ClientRectBottom = 369
     ClientRectRight = 534
     inherited cxTable: TcxTabSheet
       Caption = #1044#1072#1085#1085#1099#1077' '#1082#1083#1080#1077#1085#1090#1072
@@ -20,7 +22,7 @@ inherited ClientEdit: TClientEdit
       end
       inherited Grid: TcxGrid
         Width = 530
-        Height = 174
+        Height = 319
         inherited tvMain: TcxGridDBTableView
           object tvMainNumber: TcxGridDBColumn
             Caption = #8470' '#1087'/'#1087
@@ -40,6 +42,97 @@ inherited ClientEdit: TClientEdit
             DataBinding.FieldName = 'AttributeValue'
             Width = 72
           end
+        end
+      end
+    end
+    object cxTabSheet1: TcxTabSheet
+      Caption = #1056#1077#1082#1074#1080#1079#1080#1090#1099
+      ImageIndex = 1
+      object dxBarDockControl1: TdxBarDockControl
+        Left = 0
+        Top = 0
+        Width = 530
+        Height = 26
+        Align = dalTop
+        BarManager = dxBarManager
+      end
+      object cxGridReq: TcxGrid
+        Left = 0
+        Top = 26
+        Width = 530
+        Height = 319
+        Align = alClient
+        TabOrder = 1
+        object tvReq: TcxGridDBTableView
+          Tag = 1
+          NavigatorButtons.ConfirmDelete = False
+          NavigatorButtons.First.Visible = True
+          NavigatorButtons.PriorPage.Visible = True
+          NavigatorButtons.Prior.Visible = True
+          NavigatorButtons.Next.Visible = True
+          NavigatorButtons.NextPage.Visible = True
+          NavigatorButtons.Last.Visible = True
+          NavigatorButtons.Insert.Visible = True
+          NavigatorButtons.Append.Visible = False
+          NavigatorButtons.Delete.Visible = True
+          NavigatorButtons.Edit.Visible = True
+          NavigatorButtons.Post.Visible = True
+          NavigatorButtons.Cancel.Visible = True
+          NavigatorButtons.Refresh.Visible = True
+          NavigatorButtons.SaveBookmark.Visible = True
+          NavigatorButtons.GotoBookmark.Visible = True
+          NavigatorButtons.Filter.Visible = True
+          OnCellDblClick = tvMainCellDblClick
+          DataController.DataSource = dmPublic.dsClientParameters
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          Filtering.ColumnMRUItemsList = False
+          Filtering.ColumnPopup.MaxDropDownItemCount = 0
+          Filtering.ColumnPopup.MultiSelect = False
+          FilterRow.InfoText = #1053#1072#1089#1090#1088#1086#1081#1082#1072' '#1092#1080#1083#1100#1090#1088#1072
+          NewItemRow.InfoText = #1044#1086#1073#1072#1074#1080#1090#1100
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.ImmediateEditor = False
+          OptionsBehavior.IncSearch = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsCustomize.ColumnsQuickCustomization = True
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Inserting = False
+          OptionsSelection.InvertSelect = False
+          OptionsSelection.UnselectFocusedRecordOnExit = False
+          OptionsView.FocusRect = False
+          OptionsView.NoDataToDisplayInfoText = '<'#1053#1077#1090' '#1076#1072#1085#1085#1099#1093' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
+          OptionsView.ExpandButtonsForEmptyDetails = False
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          Styles.Selection = cxStyleSel
+          object tvReqRowNumber: TcxGridDBColumn
+            Caption = #8470
+            DataBinding.FieldName = 'RowNumber'
+            Width = 44
+          end
+          object tvReqObjectCode: TcxGridDBColumn
+            Caption = #1050#1086#1076
+            DataBinding.FieldName = 'ObjectCode'
+            Width = 85
+          end
+          object tvReqObjectName: TcxGridDBColumn
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+            DataBinding.FieldName = 'ObjectName'
+            Width = 96
+          end
+          object tvReqObjectValue: TcxGridDBColumn
+            Caption = #1047#1085#1072#1095#1077#1085#1080#1077
+            DataBinding.FieldName = 'ObjectValue'
+            Width = 273
+          end
+        end
+        object lvReq: TcxGridLevel
+          GridView = tvReq
         end
       end
     end
@@ -125,6 +218,11 @@ inherited ClientEdit: TClientEdit
       ImageIndex = 9
       OnExecute = acPrintExecute
     end
+    object acEditReq: TAction
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1088#1077#1082#1074#1080#1079#1080#1090#1099
+      ImageIndex = 3
+      OnExecute = acEditReqExecute
+    end
   end
   inherited dxBarManager: TdxBarManager
     Categories.ItemsVisibles = (
@@ -201,13 +299,42 @@ inherited ClientEdit: TClientEdit
           ItemName = 'dxBarButton5'
         end>
     end
-    object dxBarButton7: TdxBarButton [12]
+    object dxBarManagerBar2: TdxBar [3]
+      Caption = 'Custom 3'
+      CaptionButtons = <>
+      DockControl = dxBarDockControl1
+      DockedDockControl = dxBarDockControl1
+      DockedLeft = 0
+      DockedTop = 0
+      FloatLeft = 371
+      FloatTop = 202
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton9'
+        end>
+      OneOnRow = True
+      Row = 0
+      ShowMark = False
+      SizeGrip = False
+      UseOwnFont = False
+      Visible = True
+      WholeRow = True
+    end
+    object dxBarButton7: TdxBarButton [13]
       Action = acFill
       Category = 0
       Hint = #1047#1072#1087#1086#1083#1085#1080#1090#1100' '#1072#1090#1088#1080#1073#1091#1090#1099
     end
-    object dxBarButton8: TdxBarButton [13]
+    object dxBarButton8: TdxBarButton [14]
       Action = acPrint
+      Category = 0
+      PaintStyle = psCaptionGlyph
+    end
+    object dxBarButton9: TdxBarButton [15]
+      Action = acEditReq
       Category = 0
       PaintStyle = psCaptionGlyph
     end

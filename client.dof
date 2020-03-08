@@ -134,15 +134,3 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=7
-Item0=C:\soft\develop\components\FastReport 5.4.7 Pro\Source;C:\soft\develop\components\FastReport 5.4.7 Pro\Source\ExportPack;C:\soft\develop\components\FastReport 5.4.7 Pro\FastScript
-Item1=C:\Program Files\FastReport\Source;C:\Program Files\FastReport\FastScript;C:\soft\develop\FastReport 5.4.7 Pro\Source;C:\soft\develop\FastReport 5.4.7 Pro\Source\ExportPack;C:\soft\develop\FastReport 5.4.7 Pro\FastScript;C:\soft\develop\components\FastReport 5.4.7 Pro\Source;C:\soft\develop\components\FastReport 5.4.7 Pro\Source\ExportPack;C:\soft\develop\components\FastReport 5.4.7 Pro\FastScript
-Item2=C:\Program Files\FastReport\Source;C:\Program Files\FastReport\FastScript;C:\soft\develop\FastReport 5.4.7 Pro\Source;C:\soft\develop\FastReport 5.4.7 Pro\Source\ExportPack;C:\soft\develop\FastReport 5.4.7 Pro\FastScript
-Item3=C:\Program Files\FastReport\Source;C:\Program Files\FastReport\FastScript
-Item4=C:\Program Files\FastReport\Source
-Item5=C:\Program Files\DevExpress VCL\Library\Delphi7
-Item6=C:\Program Files\DevExpress VCL

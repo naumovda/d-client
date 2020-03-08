@@ -27,6 +27,18 @@ type
     dxLayoutMainItem1: TdxLayoutItem;
     dxLayoutMainItem2: TdxLayoutItem;
     dxLayoutMainItem3: TdxLayoutItem;
+    cxTabSheet1: TcxTabSheet;
+    dxBarDockControl1: TdxBarDockControl;
+    dxBarManagerBar2: TdxBar;
+    cxGridReq: TcxGrid;
+    tvReq: TcxGridDBTableView;
+    lvReq: TcxGridLevel;
+    acEditReq: TAction;
+    dxBarButton9: TdxBarButton;
+    tvReqRowNumber: TcxGridDBColumn;
+    tvReqObjectCode: TcxGridDBColumn;
+    tvReqObjectName: TcxGridDBColumn;
+    tvReqObjectValue: TcxGridDBColumn;
     procedure acFillExecute(Sender: TObject);
     procedure cxClientTypePropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
@@ -34,6 +46,7 @@ type
       AButtonIndex: Integer);
     procedure acPrintExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure acEditReqExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -55,6 +68,8 @@ uses
   ,ClientGroupUnit
   ,ClientGroupEditUnit
   ,ClientDetailEditUnit
+  ,ClientParametersUnit
+  ,ClientParametersEditUnit
   ;
 
 procedure TClientEdit.acFillExecute(Sender: TObject);
@@ -173,6 +188,15 @@ begin
   FEditForm := ClientDetailEdit;
 
   inherited;
+end;
+
+procedure TClientEdit.acEditReqExecute(Sender: TObject);
+var
+  F: TForm;
+begin
+  F := TClientParameters.Execute(ClientParametersEdit, 'modal');
+
+  F.ShowModal;
 end;
 
 end.

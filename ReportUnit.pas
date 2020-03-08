@@ -53,7 +53,9 @@ begin
   pth:=ExtractFilePath(ParamStr(0));
   try
     MsWord.Documents.Open(FileName:=pth+'report\Contract.docx', ReadOnly:=False);
+
     Replace('{%DATE%}',DateToStr(Now));
+
   finally
     MsWord.Visible := true;
     MsWord := Unassigned;

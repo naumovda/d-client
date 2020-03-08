@@ -4,7 +4,7 @@ interface
 
 uses
   Forms, SysUtils, Classes, DB, ADODB, Dialogs, frxClass, frxDBSet,
-  frxCross;
+  frxCross, xmldom, XMLIntf, msxmldom, XMLDoc;
 
 type
   TdmPublic = class(TDataModule)
@@ -201,6 +201,27 @@ type
     tDocumentRoutesCarCount: TIntegerField;
     tDocumentRoutesRoute: TIntegerField;
     qCreateDocumentAttributeSide1: TADOQuery;
+    qCreateParameters: TADOQuery;
+    dsSelfParameters: TDataSource;
+    tSelfParameters: TADOTable;
+    tSelfParametersObjectId: TWideStringField;
+    tSelfParametersObjectIntId: TAutoIncField;
+    tSelfParametersRowNumber: TIntegerField;
+    tSelfParametersObjectCode: TWideStringField;
+    tSelfParametersObjectName: TWideStringField;
+    tSelfParametersObjectValue: TWideStringField;
+    XMLDocument: TXMLDocument;
+    qCreateClientParameters: TADOQuery;
+    qAlterClientParameters: TADOQuery;
+    dsClientParameters: TDataSource;
+    tClientParameters: TADOTable;
+    tClientParametersObjectId: TWideStringField;
+    tClientParametersObjectIntId: TAutoIncField;
+    tClientParametersClientId: TIntegerField;
+    tClientParametersRowNumber: TIntegerField;
+    tClientParametersObjectCode: TWideStringField;
+    tClientParametersObjectName: TWideStringField;
+    tClientParametersObjectValue: TWideStringField;
     procedure tDocumentStateAfterInsert(DataSet: TDataSet);
     procedure tClientTypeAfterInsert(DataSet: TDataSet);
     procedure tClientTypeAttributeAfterInsert(DataSet: TDataSet);
@@ -227,6 +248,8 @@ type
     procedure tRoutesetDetailPostError(DataSet: TDataSet;
       E: EDatabaseError; var Action: TDataAction);
     procedure tDocumentRoutesAfterInsert(DataSet: TDataSet);
+    procedure tSelfParametersAfterInsert(DataSet: TDataSet);
+    procedure tClientParametersAfterInsert(DataSet: TDataSet);
 
   public
     Version: integer;
@@ -258,6 +281,9 @@ type
 
     procedure AddRoute(RouteCode: integer);
     procedure AddRoutes();
+
+    procedure AddParameter(Number: integer; ObjectCode, ObjectName,
+      ObjectValue: string);
   end;
 
 var
@@ -617,6 +643,17 @@ begin
   end;
 end;
 
+procedure TdmPublic.AddParameter(Number: integer; ObjectCode, ObjectName,
+  ObjectValue: string);
+begin
+  tSelfParameters.Append;
+  tSelfParametersRowNumber.Value := Number;
+  tSelfParametersObjectCode.Value := ObjectCode;
+  tSelfParametersObjectName.Value := ObjectName;
+  tSelfParametersObjectValue.Value := ObjectValue;
+  tSelfParameters.Post;  
+end;
+
 function TdmPublic.SetOnline(const Value, Open, Save: boolean): boolean;
 var
   RouteId, RoutesetId: integer;
@@ -770,14 +807,50 @@ begin
     SetVersion(2);
   end;
 
+  if Version < 3 then
+  begin
+    qCreateParameters.ExecSQL;
+    qCreateClientParameters.ExecSQL;
+    qAlterClientParameters.ExecSQL;
+
+    tSelfParameters.Open;
+    tClientParameters.Open;
+
+    AddParameter(1, '{%ИСПОЛНИТЕЛЬ%}', 'Исполнитель',
+      'Индивидуальный предприниматель Гунякин Дмитрий Григорьевич');
+    AddParameter(2, '{%ИСПОЛНИТЕЛЬ_СОКР%}', 'Исполнитель сокр.',
+      'ИП Гунякин Д.Г.');
+    AddParameter(3, '{%ОСНОВАНИЕ%}', 'Основание',
+      'Свидетельства о Государственной регистрации физического лица '
+      + 'в качестве индивидуального предпринимателя');
+    AddParameter(4, '{%ВЫДАНО%}', 'Выдано',
+      'Межрайонной инспекции Федеральной налоговой службы №2 '
+      + 'по Рязанской области от 26.11.2008 г.');
+    AddParameter(5, '{%ИНН%}', 'ИНН', '623410415606');
+    AddParameter(6, '{%ОГРНИП%}', 'ОГРНИП', '308623433100041');
+    AddParameter(7, '{%АДРЕС%}', 'Адрес',
+      'г. Рязань, Окружная дорога 185 км., строение 6, корпус 4, офис 28');
+    AddParameter(8, '{%Р/СЧ%}', 'Р/сч.', '40802810000000003520');
+    AddParameter(9, '{%БАНК%}', 'БАНК', 'Прио-Внешторгбанк (ОАО)');
+    AddParameter(10, '{%БИК%}', 'БИК', '046126708');
+    AddParameter(11, '{%АДРЕСБАНКА%}', 'Адрес банка:',
+      '390023, г. Рязань, ул.Есенина, д.82/26');
+    AddParameter(12, '{%ТЕЛЕФОН%}', 'Телефон', '993-551');
+    AddParameter(13, '{%E-MAIL%}', 'E-mail', 'marshrut-tv62@yandex.ru');
+
+    SetVersion(3);
+  end;
+
+  tSelfParameters.Open;
+
   tRoute.Open;
 
   tRouteset.Open;
 
-  tRoutesetDetail.Open;  
+  tRoutesetDetail.Open;
 
   tPaymentType.Open;
-  
+
   tDocumentState.Open;
 
   tClientType.Open;
@@ -789,7 +862,7 @@ begin
   tClientTypeAttribute.Open;
 
   tClient.Open;
-
+  tClientParameters.Open;
   tClientAttributeValue.Open;
 
   tDocument.Open;
@@ -1057,5 +1130,16 @@ begin
   tDocumentRoutesObjectId.Value := NEWGUID;
 end;
 
+procedure TdmPublic.tSelfParametersAfterInsert(DataSet: TDataSet);
+begin
+  tSelfParametersObjectId.Value := NEWGUID;
+end;
+
+procedure TdmPublic.tClientParametersAfterInsert(DataSet: TDataSet);
+begin
+  tClientParametersObjectId.Value := NEWGUID;
+end;
+
 end.
+
 

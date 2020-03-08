@@ -28,7 +28,12 @@ uses
   RoutesetEditUnit in 'RoutesetEditUnit.pas' {RoutesetEdit},
   ReportUnit in 'ReportUnit.pas' {WordExport: TDataModule},
   ClientDetailEditUnit in 'ClientDetailEditUnit.pas' {ClientDetailEdit},
-  RoutesetDetailEditUnit in 'RoutesetDetailEditUnit.pas' {RoutesetDetailEdit};
+  RoutesetDetailEditUnit in 'RoutesetDetailEditUnit.pas' {RoutesetDetailEdit},
+  ClientParametersUnit in 'ClientParametersUnit.pas' {ClientParameters},
+  ClientParametersEditUnit in 'ClientParametersEditUnit.pas' {ClientParametersEdit},
+  SelfParametersEditUnit in 'SelfParametersEditUnit.pas' {SelfParametersEdit},
+  SelfParametersUnit in 'SelfParametersUnit.pas' {SelfParameters},
+  SumToText in 'SumToText.pas';
 
 {$R *.res}
 
@@ -40,9 +45,10 @@ begin
   Application.CreateForm(TdmPublic, dmPublic);
   Application.CreateForm(TWordExport, WordExport);
   Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TRoutesetDetailEdit, RoutesetDetailEdit);  
+  Application.CreateForm(TRoutesetDetailEdit, RoutesetDetailEdit);
   Application.CreateForm(TClientDetailEdit, ClientDetailEdit);
   Application.CreateForm(TClientTypeEdit, ClientTypeEdit);
+  Application.CreateForm(TClientParametersEdit, ClientParametersEdit);
   Application.CreateForm(TClientEdit, ClientEdit);
   Application.CreateForm(TDocumentEdit, DocumentEdit);
   Application.CreateForm(TPaymentTypeEdit, PaymentTypeEdit);
@@ -51,6 +57,6 @@ begin
   Application.CreateForm(TClientGroupEdit, ClientGroupEdit);
   Application.CreateForm(TRouteEdit, RouteEdit);
   Application.CreateForm(TRoutesetEdit, RoutesetEdit);
-
+  Application.CreateForm(TSelfParametersEdit, SelfParametersEdit);
   Application.Run;
 end.

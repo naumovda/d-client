@@ -1,10 +1,11 @@
 object dmPublic: TdmPublic
   OldCreateOrder = False
-  Left = 401
-  Top = 151
+  Left = 329
+  Top = 186
   Height = 631
   Width = 974
   object Conn: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=database.mdb;Persis' +
       't Security Info=False;'
@@ -348,6 +349,7 @@ object dmPublic: TdmPublic
     Top = 152
   end
   object tClientType: TADOTable
+    Active = True
     Connection = Conn
     CursorType = ctStatic
     AfterInsert = tClientTypeAfterInsert
@@ -695,6 +697,7 @@ object dmPublic: TdmPublic
     Top = 80
   end
   object tClientGroup: TADOTable
+    Active = True
     Connection = Conn
     CursorType = ctStatic
     AfterInsert = tClientGroupAfterInsert
@@ -1416,5 +1419,134 @@ object dmPublic: TdmPublic
       ');')
     Left = 624
     Top = 136
+  end
+  object qCreateParameters: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table SelfParameters'
+      '('
+      '  ObjectId VARCHAR(50),'
+      '  ObjectIntId COUNTER CONSTRAINT ParametersPK PRIMARY KEY,'
+      '  RowNumber INT,'
+      '  ObjectCode VARCHAR(50),'
+      '  ObjectName VARCHAR(255),'
+      '  ObjectValue VARCHAR(255)'
+      ')')
+    Left = 736
+    Top = 16
+  end
+  object dsSelfParameters: TDataSource
+    DataSet = tSelfParameters
+    Left = 288
+    Top = 504
+  end
+  object tSelfParameters: TADOTable
+    Connection = Conn
+    CursorType = ctStatic
+    AfterInsert = tSelfParametersAfterInsert
+    TableName = 'SelfParameters'
+    Left = 304
+    Top = 520
+    object tSelfParametersObjectId: TWideStringField
+      FieldName = 'ObjectId'
+      Size = 50
+    end
+    object tSelfParametersObjectIntId: TAutoIncField
+      FieldName = 'ObjectIntId'
+      ReadOnly = True
+    end
+    object tSelfParametersRowNumber: TIntegerField
+      FieldName = 'RowNumber'
+    end
+    object tSelfParametersObjectCode: TWideStringField
+      FieldName = 'ObjectCode'
+      Size = 50
+    end
+    object tSelfParametersObjectName: TWideStringField
+      FieldName = 'ObjectName'
+      Size = 255
+    end
+    object tSelfParametersObjectValue: TWideStringField
+      FieldName = 'ObjectValue'
+      Size = 255
+    end
+  end
+  object XMLDocument: TXMLDocument
+    Left = 896
+    Top = 16
+    DOMVendorDesc = 'MSXML'
+  end
+  object qCreateClientParameters: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'create table ClientParameters'
+      '('
+      '  ObjectId VARCHAR(50),'
+      '  ObjectIntId COUNTER CONSTRAINT ParametersPK PRIMARY KEY,'
+      '  ClientId INT,'
+      '  RowNumber INT,'
+      '  ObjectCode VARCHAR(50),'
+      '  ObjectName VARCHAR(255),'
+      '  ObjectValue VARCHAR(255)'
+      ')')
+    Left = 736
+    Top = 72
+  end
+  object qAlterClientParameters: TADOQuery
+    Connection = Conn
+    Parameters = <>
+    SQL.Strings = (
+      'alter table ClientParameters'
+      'add CONSTRAINT ClientParametersFK1'
+      'FOREIGN KEY (ClientId)'
+      'REFERENCES Client(ObjectIntId) '
+      'ON UPDATE CASCADE '
+      'ON DELETE CASCADE;')
+    Left = 760
+    Top = 96
+  end
+  object dsClientParameters: TDataSource
+    DataSet = tClientParameters
+    Left = 216
+    Top = 296
+  end
+  object tClientParameters: TADOTable
+    Connection = Conn
+    CursorType = ctStatic
+    AfterInsert = tClientParametersAfterInsert
+    IndexFieldNames = 'ClientId'
+    MasterFields = 'ObjectIntId'
+    MasterSource = dsClient
+    TableName = 'ClientParameters'
+    Left = 232
+    Top = 312
+    object tClientParametersObjectId: TWideStringField
+      FieldName = 'ObjectId'
+      Size = 50
+    end
+    object tClientParametersObjectIntId: TAutoIncField
+      FieldName = 'ObjectIntId'
+      ReadOnly = True
+    end
+    object tClientParametersClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tClientParametersRowNumber: TIntegerField
+      FieldName = 'RowNumber'
+    end
+    object tClientParametersObjectCode: TWideStringField
+      FieldName = 'ObjectCode'
+      Size = 50
+    end
+    object tClientParametersObjectName: TWideStringField
+      FieldName = 'ObjectName'
+      Size = 255
+    end
+    object tClientParametersObjectValue: TWideStringField
+      FieldName = 'ObjectValue'
+      Size = 255
+    end
   end
 end
