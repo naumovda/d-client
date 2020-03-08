@@ -22,6 +22,8 @@ type
     dxLayoutMainItem3: TdxLayoutItem;
     cxNumber: TcxDBSpinEdit;
     dxLayoutMainItem4: TdxLayoutItem;
+    dxLayoutMainGroup1: TdxLayoutGroup;
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,5 +39,12 @@ uses
   DataModuleUnit
   ;
 {$R *.dfm}
+
+procedure TClientParametersEdit.FormShow(Sender: TObject);
+begin
+  inherited;
+
+  FocusControl(cxValue);
+end;
 
 end.

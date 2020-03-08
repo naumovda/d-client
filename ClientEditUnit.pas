@@ -39,6 +39,8 @@ type
     tvReqObjectCode: TcxGridDBColumn;
     tvReqObjectName: TcxGridDBColumn;
     tvReqObjectValue: TcxGridDBColumn;
+    acImportReq: TAction;
+    dxBarButton10: TdxBarButton;
     procedure acFillExecute(Sender: TObject);
     procedure cxClientTypePropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
@@ -47,6 +49,10 @@ type
     procedure acPrintExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure acEditReqExecute(Sender: TObject);
+    procedure acImportReqExecute(Sender: TObject);
+    procedure tvReqCellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
   private
     { Private declarations }
   public
@@ -70,6 +76,7 @@ uses
   ,ClientDetailEditUnit
   ,ClientParametersUnit
   ,ClientParametersEditUnit
+  ,ImportFromDaDataUnit
   ;
 
 procedure TClientEdit.acFillExecute(Sender: TObject);
@@ -194,9 +201,24 @@ procedure TClientEdit.acEditReqExecute(Sender: TObject);
 var
   F: TForm;
 begin
-  F := TClientParameters.Execute(ClientParametersEdit, 'modal');
+  ClientParametersEdit.ShowModal;
 
-  F.ShowModal;
+  //F := TClientParameters.Execute(ClientParametersEdit, 'modal');
+  //F.ShowModal;
+end;
+
+procedure TClientEdit.acImportReqExecute(Sender: TObject);
+var
+  F: TForm;
+begin
+  F := TImportFromDaData.Execute(true);
+end;
+
+procedure TClientEdit.tvReqCellDblClick(Sender: TcxCustomGridTableView;
+  ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+  AShift: TShiftState; var AHandled: Boolean);
+begin
+  acEditReqExecute(Sender);
 end;
 
 end.

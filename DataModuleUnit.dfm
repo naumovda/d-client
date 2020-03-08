@@ -5,7 +5,6 @@ object dmPublic: TdmPublic
   Height = 631
   Width = 974
   object Conn: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=database.mdb;Persis' +
       't Security Info=False;'
@@ -349,7 +348,6 @@ object dmPublic: TdmPublic
     Top = 152
   end
   object tClientType: TADOTable
-    Active = True
     Connection = Conn
     CursorType = ctStatic
     AfterInsert = tClientTypeAfterInsert
@@ -697,7 +695,6 @@ object dmPublic: TdmPublic
     Top = 80
   end
   object tClientGroup: TADOTable
-    Active = True
     Connection = Conn
     CursorType = ctStatic
     AfterInsert = tClientGroupAfterInsert

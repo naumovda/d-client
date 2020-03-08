@@ -33,7 +33,9 @@ uses
   ClientParametersEditUnit in 'ClientParametersEditUnit.pas' {ClientParametersEdit},
   SelfParametersEditUnit in 'SelfParametersEditUnit.pas' {SelfParametersEdit},
   SelfParametersUnit in 'SelfParametersUnit.pas' {SelfParameters},
-  SumToText in 'SumToText.pas';
+  SumToText in 'SumToText.pas',
+  ImportFromDaDataUnit in 'ImportFromDaDataUnit.pas' {ImportFromDaData},
+  ProcessMessage in 'ProcessMessage.pas' {fmProcessMsg};
 
 {$R *.res}
 
@@ -58,5 +60,8 @@ begin
   Application.CreateForm(TRouteEdit, RouteEdit);
   Application.CreateForm(TRoutesetEdit, RoutesetEdit);
   Application.CreateForm(TSelfParametersEdit, SelfParametersEdit);
+  Application.CreateForm(TfmProcessMsg, fmProcessMsg);
+  //  Application.CreateForm(TImportFromDaData, ImportFromDaData);
+
   Application.Run;
 end.
